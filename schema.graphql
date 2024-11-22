@@ -1,1 +1,92 @@
-# TODO: Schema
+type Teacher {
+    id: ID!
+    firstname: String!
+    lastname: String!
+    email: String!
+    classroom: Classroom!
+}
+
+type Student {
+    id: ID!
+    firstname: String!
+    lastname: String!
+    email: String!
+}
+
+type Classroom {
+    id: ID!
+    name: String!
+    teacher: Teacher!
+    students: [Student]!
+    assignments: [Assignment]!
+}
+
+type Assignment {
+    id: ID!
+    title: String!
+    description: String!
+}
+
+type Score {
+    id: ID!
+    student: Student!
+    assignment: Assignment!
+    score: Float!
+}
+
+type AssignmentsResult {
+    success: Boolean!
+    errors: [String]
+    assignments: [Assignment]
+}
+
+type AssignmentResult {
+    success: Boolean!
+    errors: [String]
+    assignment: Assignment
+}
+
+type ScoreResult {
+    success: Boolean!
+    errors: [String]
+    score: Score
+}
+
+type StudentScore {
+    assignment: Assignment!
+    score: Float!
+}
+
+type StudentScoreReport {
+    success: Boolean!
+    errors: [String]
+    scores: [StudentScore]
+}
+
+type DeleteResult {
+    success: Boolean!
+    errors: [String]
+}
+
+input CreateAssignmentInput {
+    title: String!
+    description: String!
+    classroom_id: Int!
+}
+
+input AddScoreInput {
+    student_id: Int!
+    assignment_id: Int!
+    score: Float!
+}
+
+type Query {
+    getAllStudentAssignments(studentID: ID!): StudentScoreReport!
+}
+
+type Mutation {
+    createAssignment(input: CreateAssignmentInput!): AssignmentResult!
+    addScore(input: AddScoreInput!): ScoreResult!
+    removeAssignment(assignmentId: ID!): DeleteResult!
+    removeScore(scoreId: ID!): DeleteResult!
+}
